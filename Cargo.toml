@@ -9,16 +9,15 @@ readme = "README.md"
 edition = "2021"
 
 [dependencies]
-packed_struct = "0.10"
+packed_struct = { version = "0.10", default-features = false }
 serde = { version = "1.0", optional = true }
 serde_derive = { version = "1.0", optional = true }
-defmt = { version = "0.3", optional = true }
+defmt = { version = "0.3", optional = true, features = ["alloc"]}
 crc-any = "2.3"
 
 [features]
 default = ["std", "serde"]
 std = ["defmt/alloc"]
-no_std = []
 suppport_int32_setting_type = []
 serde = ["dep:serde", "dep:serde_derive"]
 defmt = ["dep:defmt"]

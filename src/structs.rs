@@ -1,4 +1,6 @@
 //! MSP structures
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 use packed_struct::prelude::*;
 #[cfg(feature = "serde")]
@@ -770,7 +772,7 @@ impl TryFrom<&str> for Baudrate {
     }
 }
 
-impl From<Baudrate> for String {
+impl From<Baudrate> for &'static str {
     fn from(value: Baudrate) -> Self {
         match value {
             Baudrate::BaudAuto => "0",
@@ -791,7 +793,6 @@ impl From<Baudrate> for String {
             Baudrate::Baud2000000 => "2000000",
             Baudrate::Baud2470000 => "2470000",
         }
-        .to_owned()
     }
 }
 

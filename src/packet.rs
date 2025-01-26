@@ -1,5 +1,8 @@
 use crc_any::CRCu8;
 
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
+
 /// Packet parsing error
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum MspPacketParseError {
