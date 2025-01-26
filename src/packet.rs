@@ -1,5 +1,4 @@
 use crc_any::CRCu8;
-use prelude::v1::*;
 
 /// Packet parsing error
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -235,7 +234,7 @@ impl MspParser {
                 }
 
                 let mut n = Vec::new();
-                mem::swap(&mut self.packet_data, &mut n);
+                core::mem::swap(&mut self.packet_data, &mut n);
 
                 let packet = MspPacket {
                     cmd: self.packet_cmd,
@@ -263,7 +262,7 @@ impl MspParser {
     }
 }
 
-impl Default for ::MspParser {
+impl Default for MspParser {
     fn default() -> Self {
         Self::new()
     }

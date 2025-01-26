@@ -9,20 +9,6 @@
 #[macro_use]
 extern crate alloc;
 
-extern crate packed_struct;
-
-extern crate crc_any;
-
-#[macro_use]
-extern crate packed_struct_codegen;
-
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-
-mod prelude;
-
 mod commands;
 mod packet;
 pub mod structs;

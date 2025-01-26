@@ -1,27 +1,37 @@
 //! MSP structures
 
-use prelude::v1::*;
+use packed_struct::prelude::*;
+#[cfg(feature = "serde")]
+use serde_derive::{Serialize, Deserialize};
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspApiVersion {
     pub protocol_version: u8,
     pub api_version_major: u8,
     pub api_version_minor: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspFlightControllerVariant {
     pub identifier: [u8; 4],
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspFlightControllerVersion {
     pub major: u8,
     pub minor: u8,
     pub patch: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspBoardInfo {
     pub board_id: [u8; 4],
@@ -29,19 +39,25 @@ pub struct MspBoardInfo {
     pub fc_type: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspBuildInfo {
     pub date_str: [u8; 11],
     pub time_str: [u8; 8],
     pub git_str: [u8; 7],
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspUniqueId {
     pub uid: [u8; 12],
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspAvailableSensors {
     #[packed_field(bits = "2")]
@@ -56,7 +72,9 @@ pub struct MspAvailableSensors {
     pub acc: bool,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspStatus {
     pub cycle_time: u16,
@@ -69,7 +87,9 @@ pub struct MspStatus {
     pub system_load: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspStatusEx {
     pub cycle_time: u16,
@@ -84,7 +104,9 @@ pub struct MspStatusEx {
     pub current_control_rate_profile_index: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspBfConfig {
     pub mixer_configuration: u8,
@@ -97,7 +119,9 @@ pub struct MspBfConfig {
     pub current_offset: i16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspRawImu {
     pub acc_x: i16,
@@ -111,7 +135,9 @@ pub struct MspRawImu {
     pub mag_z: i16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspDataFlashSummaryReply {
     #[packed_field(bits = "6")]
@@ -123,7 +149,9 @@ pub struct MspDataFlashSummaryReply {
     pub used_size_bytes: u32,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspDataFlashReply {
     pub read_address: u32,
@@ -131,20 +159,26 @@ pub struct MspDataFlashReply {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "6", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspDataFlashRead {
     pub read_address: u32,
     pub read_length: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspAccTrim {
     pub pitch: u16,
     pub roll: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspIdent {
     pub version: u8,
@@ -153,7 +187,9 @@ pub struct MspIdent {
     pub capability: u32,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspMisc {
     pub rx_mid_rc: u16,
@@ -173,7 +209,9 @@ pub struct MspMisc {
     pub compass_mag_declination: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspAttitude {
     pub roll: i16,
@@ -181,7 +219,9 @@ pub struct MspAttitude {
     pub yaw: i16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspAltitude {
     /// [centimeters]
@@ -190,7 +230,9 @@ pub struct MspAltitude {
     pub vario: i16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspBatteryConfig {
     pub vbat_min_cell_voltage: u8,
@@ -201,7 +243,9 @@ pub struct MspBatteryConfig {
     pub current_meter_source: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspAnalog {
     pub battery_voltage: u8,
@@ -211,19 +255,25 @@ pub struct MspAnalog {
     pub amperage: i16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspRssiConfig {
     pub rssi_channel: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspVoltageMeter {
     pub id: u8,
     pub value: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspCurrentMeter {
     pub id: u8,
@@ -232,7 +282,9 @@ pub struct MspCurrentMeter {
     pub amperage: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspBatteryState {
     pub battery_cell_count: u8,
@@ -247,7 +299,9 @@ pub struct MspBatteryState {
     pub alerts: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspRcTuning {
     pub rc_rate8: u8,
@@ -265,7 +319,9 @@ pub struct MspRcTuning {
     pub rc_yaw_rate8: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspRxConfig {
     pub serialrx_provider: u8,
@@ -284,13 +340,17 @@ pub struct MspRxConfig {
     pub fpv_cam_angle_degrees: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspRcChannelValue {
     pub value: u16,
 }
 
-#[derive(PrimitiveEnum, Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MspRcChannel {
     /// Ailerons
     Roll = 0,
@@ -317,24 +377,32 @@ pub enum MspRcChannel {
     Aux16 = 19,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspRcMappedChannel {
     #[packed_field(size_bits = "8", ty = "enum")]
     pub channel: MspRcChannel,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspFeatures {
     pub features: [bool; 32],
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspMotor {
     pub motors: [u16; 8],
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspMotor3DConfig {
     pub deadband_3d_low: u16,
@@ -342,7 +410,9 @@ pub struct MspMotor3DConfig {
     pub neutral_3d: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspMotorConfig {
     pub min_throttle: u16,
@@ -350,7 +420,9 @@ pub struct MspMotorConfig {
     pub min_command: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspRcDeadband {
     pub deadband: u8,
@@ -359,7 +431,9 @@ pub struct MspRcDeadband {
     pub deadband_3d_throttle: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspSensorAlignment {
     pub gyro_alignment: u8,
@@ -367,7 +441,9 @@ pub struct MspSensorAlignment {
     pub mag_alignment: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspAdvancedConfig {
     pub gyro_sync_denom: u8,
@@ -380,7 +456,9 @@ pub struct MspAdvancedConfig {
     pub motor_pwm_inversion: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspFilterConfig {
     pub gyro_soft_lpf_hz: u8,
@@ -394,7 +472,9 @@ pub struct MspFilterConfig {
     pub gyro_soft_notch_cutoff_2: u16,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspPidAdvanced {
     pub _r1: u16,
@@ -413,7 +493,9 @@ pub struct MspPidAdvanced {
     pub level_sensitivity: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspSensorConfig {
     pub acc_hardware: u8,
@@ -421,13 +503,17 @@ pub struct MspSensorConfig {
     pub mag_hardware: u8,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(PackedStruct, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspServos {
     pub servos: [u16; 8],
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "14", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspServoConfig {
     pub min: u16,
@@ -441,6 +527,8 @@ pub struct MspServoConfig {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetServoConfig {
     pub index: u8,
@@ -448,7 +536,9 @@ pub struct MspSetServoConfig {
     pub servo_config: MspServoConfig,
 }
 
-#[derive(PackedStruct, Serialize, Deserialize, Debug, Copy, Clone)]
+#[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb")]
 pub struct MspMixerConfig {
     #[packed_field(size_bits = "8", ty = "enum")]
@@ -456,6 +546,8 @@ pub struct MspMixerConfig {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "4", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspModeRange {
     pub box_id: u8,
@@ -466,6 +558,8 @@ pub struct MspModeRange {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "5", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetModeRange {
     pub index: u8,
@@ -473,7 +567,9 @@ pub struct MspSetModeRange {
     pub mode_range: MspModeRange,
 }
 
-#[derive(PrimitiveEnum, Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MixerMode {
     Tri = 1,
     QuadPlus = 2,
@@ -489,6 +585,8 @@ pub enum MixerMode {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "8", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspMotorMixer {
     pub throttle: u16,
@@ -498,6 +596,8 @@ pub struct MspMotorMixer {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "9", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetMotorMixer {
     pub index: u8,
@@ -506,6 +606,8 @@ pub struct MspSetMotorMixer {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "13", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspOsdConfig {
     pub video_system: u8,
@@ -519,6 +621,8 @@ pub struct MspOsdConfig {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetGetOsdConfig {
     pub item_index: u8,
@@ -527,6 +631,8 @@ pub struct MspSetGetOsdConfig {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "2", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspOsdItemPosition {
     pub col: u8,
@@ -534,6 +640,8 @@ pub struct MspOsdItemPosition {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetOsdLayout {
     pub item_index: u8,
@@ -551,6 +659,8 @@ pub struct MspSetOsdLayoutItem {
 }
 
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MspOsdSettings {
     pub osd_support: u8,
     pub config: MspOsdConfig,
@@ -558,13 +668,17 @@ pub struct MspOsdSettings {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "2", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspOsdLayouts {
     pub layout_count: u8,
     pub item_count: u8,
 }
 
-#[derive(PrimitiveEnum, Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum SerialIdentifier {
     None = 255,
     USART1 = 0,
@@ -604,7 +718,9 @@ impl TryFrom<u8> for SerialIdentifier {
     }
 }
 
-#[derive(PrimitiveEnum, Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Baudrate {
     BaudAuto = 0,
     Baud1200 = 1,
@@ -680,6 +796,8 @@ impl From<Baudrate> for String {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSerialSetting {
     #[packed_field(size_bits = "8", ty = "enum")]
@@ -696,6 +814,8 @@ pub struct MspSerialSetting {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetServoMixRule {
     pub index: u8,
@@ -704,6 +824,8 @@ pub struct MspSetServoMixRule {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "8", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspServoMixRule {
     pub target_channel: u8,
@@ -716,6 +838,8 @@ pub struct MspServoMixRule {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "1", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSetServoMixer {
     pub index: u8,
@@ -724,6 +848,8 @@ pub struct MspSetServoMixer {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "6", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspServoMixer {
     pub target_channel: u8,
@@ -734,12 +860,16 @@ pub struct MspServoMixer {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb", bit_numbering = "msb0")]
 pub struct MspRxMap {
     pub map: [u8; 4], // MAX_MAPPABLE_RX_INPUTS
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSettingGroup {
     pub group_id: u16,
@@ -748,19 +878,25 @@ pub struct MspSettingGroup {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSettingInfoRequest {
     pub null: u8,
     pub id: u16,
 }
 
-#[derive(PrimitiveEnum, Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum SettingMode {
     ModeDirect = 0,
     ModeLookup = 0x40,
 }
 
-#[derive(PrimitiveEnum, Serialize, Deserialize, Debug, Copy, Clone, PartialEq)]
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum SettingType {
     VarUint8 = 0,
     VarInt8,
@@ -774,6 +910,8 @@ pub enum SettingType {
 }
 
 #[derive(PackedStruct, Debug, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[packed_struct(bytes = "15", endian = "lsb", bit_numbering = "msb0")]
 pub struct MspSettingInfo {
     // pub name: [u8; ?], null terminated strings

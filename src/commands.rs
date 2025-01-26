@@ -1,6 +1,8 @@
-#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
-#[allow(non_camel_case_types)]
+use packed_struct::derive::PrimitiveEnum;
 
+#[derive(PrimitiveEnum, Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[allow(non_camel_case_types)]
 /// MSP command values, used for command encapsulation
 pub enum MspCommandCode {
     MSP_API_VERSION = 1,
@@ -161,6 +163,8 @@ pub enum MspCommandCode {
 
     MSP_SENSOR_CONFIG = 96,
     MSP_SET_SENSOR_CONFIG = 97,
+    MSP_SET_PASSTHROUGH = 245,
+    MSP2_SEND_DSHOT_COMMAND = 0x3003,
 
     // Inav
     MSP2_COMMON_SETTING = 0x1003, //in/out message    Returns the value for a setting
