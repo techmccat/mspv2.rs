@@ -1,7 +1,7 @@
 use crc_any::CRCu8;
 
 #[cfg(not(feature = "std"))]
-use alloc::{vec::Vec, boxed::Box};
+use alloc::{boxed::Box, vec::Vec};
 
 /// Packet parsing error
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -335,80 +335,86 @@ impl MspPacket {
     }
 }
 
-#[test]
-fn test_serialize() {
-    let packet = MspPacket {
-        cmd: 2,
-        direction: MspPacketDirection::ToFlightController,
-        data: vec![0xbe, 0xef],
-    };
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[cfg(not(feature = "std"))]
+    use alloc::vec;
+    #[test]
+    fn test_serialize() {
+        let packet = MspPacket {
+            cmd: 2,
+            direction: MspPacketDirection::ToFlightController,
+            data: vec![0xbe, 0xef].into(),
+        };
 
-    let size = packet.packet_size_bytes();
-    assert_eq!(8, size);
-
-    let mut output = vec![0; size];
-    packet.serialize(&mut output).unwrap();
-    let expected = ['$' as u8, 'M' as u8, '<' as u8, 2, 2, 0xbe, 0xef, 81];
-    assert_eq!(&expected, output.as_slice());
-
-    let crc = 2 ^ 2 ^ 0xBE ^ 0xEF;
-    assert_eq!(81, crc);
-
-    let mut packet_parsed = None;
-    let mut parser = MspParser::new();
-    for b in output {
-        let s = parser.parse(b);
-        if let Ok(Some(p)) = s {
-            packet_parsed = Some(p);
-        }
-    }
-
-    assert_eq!(packet, packet_parsed.unwrap());
-}
-
-#[test]
-fn test_roundtrip() {
-    fn roundtrip(packet: &MspPacket) {
         let size = packet.packet_size_bytes();
+        assert_eq!(8, size);
+
         let mut output = vec![0; size];
-
         packet.serialize(&mut output).unwrap();
+        let expected = ['$' as u8, 'M' as u8, '<' as u8, 2, 2, 0xbe, 0xef, 81];
+        assert_eq!(&expected, output.as_slice());
 
-        let mut parser = MspParser::new();
+        let crc = 2 ^ 2 ^ 0xBE ^ 0xEF;
+        assert_eq!(81, crc);
+
         let mut packet_parsed = None;
+        let mut parser = MspParser::new();
         for b in output {
             let s = parser.parse(b);
             if let Ok(Some(p)) = s {
                 packet_parsed = Some(p);
             }
         }
-        assert_eq!(packet, &packet_parsed.unwrap());
+
+        assert_eq!(packet, packet_parsed.unwrap());
     }
 
-    {
-        let packet = MspPacket {
-            cmd: 1,
-            direction: MspPacketDirection::ToFlightController,
-            data: vec![0x00, 0x00, 0x00],
-        };
-        roundtrip(&packet);
-    }
+    #[test]
+    fn test_roundtrip() {
+        fn roundtrip(packet: &MspPacket) {
+            let size = packet.packet_size_bytes();
+            let mut output = vec![0; size].into_boxed_slice();
 
-    {
-        let packet = MspPacket {
-            cmd: 200,
-            direction: MspPacketDirection::FromFlightController,
-            data: vec![],
-        };
-        roundtrip(&packet);
-    }
+            packet.serialize(&mut output).unwrap();
 
-    {
-        let packet = MspPacket {
-            cmd: 100,
-            direction: MspPacketDirection::Unsupported,
-            data: vec![0x44, 0x20, 0x00, 0x80],
-        };
-        roundtrip(&packet);
+            let mut parser = MspParser::new();
+            let mut packet_parsed = None;
+            for b in output {
+                let s = parser.parse(b);
+                if let Ok(Some(p)) = s {
+                    packet_parsed = Some(p);
+                }
+            }
+            assert_eq!(packet, &packet_parsed.unwrap());
+        }
+
+        {
+            let packet = MspPacket {
+                cmd: 1,
+                direction: MspPacketDirection::ToFlightController,
+                data: Box::new([0x00, 0x00, 0x00]),
+            };
+            roundtrip(&packet);
+        }
+
+        {
+            let packet = MspPacket {
+                cmd: 200,
+                direction: MspPacketDirection::FromFlightController,
+                data: Box::new([]),
+            };
+            roundtrip(&packet);
+        }
+
+        {
+            let packet = MspPacket {
+                cmd: 100,
+                direction: MspPacketDirection::Unsupported,
+                data: Box::new([0x44, 0x20, 0x00, 0x80]),
+            };
+            roundtrip(&packet);
+        }
     }
 }
