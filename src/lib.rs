@@ -13,3 +13,4 @@ pub mod structs;
 
 pub use commands::*;
 pub use packet::*;
+pub use packed_struct;

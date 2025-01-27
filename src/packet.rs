@@ -1,7 +1,7 @@
 use crc_any::CRCu8;
 
 #[cfg(not(feature = "std"))]
-use alloc::vec::Vec;
+use alloc::{vec::Vec, boxed::Box};
 
 /// Packet parsing error
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -46,7 +46,7 @@ impl MspPacketDirection {
 pub struct MspPacket {
     pub cmd: u16,
     pub direction: MspPacketDirection,
-    pub data: Vec<u8>,
+    pub data: Box<[u8]>,
 }
 
 #[derive(Copy, Clone, PartialEq, Debug)]
@@ -245,7 +245,7 @@ impl MspParser {
                 let packet = MspPacket {
                     cmd: self.packet_cmd,
                     direction: self.packet_direction,
-                    data: n,
+                    data: n.into(),
                 };
 
                 self.reset();
