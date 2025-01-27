@@ -5,6 +5,7 @@ use alloc::vec::Vec;
 
 /// Packet parsing error
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MspPacketParseError {
     OutputBufferSizeMismatch,
     CrcMismatch { expected: u8, calculated: u8 },
@@ -17,6 +18,7 @@ pub enum MspPacketParseError {
 
 /// Packet's desired destination
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MspPacketDirection {
     /// Network byte '<'
     ToFlightController,
@@ -39,6 +41,7 @@ impl MspPacketDirection {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 /// A decoded MSP packet, with a command code, direction and payload
 pub struct MspPacket {
     pub cmd: u16,
