@@ -285,53 +285,47 @@ impl MspPacket {
         9 + self.data.len()
     }
 
-    /// Serialize to network bytes
-    pub fn serialize(&self, output: &mut [u8]) -> Result<(), MspPacketParseError> {
-        let l = output.len();
-
-        if l != self.packet_size_bytes() {
-            return Err(MspPacketParseError::OutputBufferSizeMismatch);
-        }
-
-        output[0] = b'$';
-        output[1] = b'M';
-        output[2] = self.direction.to_byte();
-        output[3] = self.data.len() as u8;
-        output[4] = self.cmd as u8;
-
-        output[5..l - 1].copy_from_slice(&self.data);
-
-        let mut crc = output[3] ^ output[4];
-        for b in &*self.data {
-            crc ^= *b;
-        }
-        output[l - 1] = crc;
-
-        Ok(())
+    pub fn parity(&self) -> u8 {
+        let payload_len = self.data.len() as u8;
+        self.data
+            .iter()
+            .fold(payload_len ^ self.cmd as u8, |crc, next| crc ^ next)
     }
 
-    /// Serialize to network bytes
-    pub fn serialize_v2(&self, output: &mut [u8]) -> Result<(), MspPacketParseError> {
-        let l = output.len();
+    /// Serialize to a writer
+    // TODO: handle v2 over v1 encapsulation?
+    pub fn write_v1<W: embedded_io::Write>(&self, mut out: W) -> Result<usize, W::Error> {
+        let payload_len = self.data.len() as u8;
+        let dir_byte = self.direction.to_byte();
+        let crc = self.parity();
 
-        if l != self.packet_size_bytes_v2() {
-            return Err(MspPacketParseError::OutputBufferSizeMismatch);
-        }
+        out.write_all(&[b'$', b'M', dir_byte, payload_len, self.cmd as u8])?;
+        out.write_all(&self.data)?;
+        out.write_all(&[crc])?;
 
-        output[0] = b'$';
-        output[1] = b'X';
-        output[2] = self.direction.to_byte();
-        output[3] = 0;
-        output[4..6].copy_from_slice(&self.cmd.to_le_bytes());
-        output[6..8].copy_from_slice(&(self.data.len() as u16).to_le_bytes());
+        Ok(self.packet_size_bytes())
+    }
 
-        output[8..l - 1].copy_from_slice(&self.data);
-
+    pub fn crc_v2(&self) -> u8 {
         let mut crc = CRCu8::crc8dvb_s2();
-        crc.digest(&output[3..l - 1]);
-        output[l - 1] = crc.get_crc();
+        crc.digest(&[0]);
+        crc.digest(&self.cmd.to_le_bytes());
+        crc.digest(&(self.data.len() as u16).to_le_bytes());
+        crc.digest(&self.data);
 
-        Ok(())
+        crc.get_crc()
+    }
+
+    /// Serialize to a writer
+    pub fn write_v2<W: embedded_io::Write>(&self, mut output: W) -> Result<usize, W::Error> {
+        // TODO: maybe handle flags
+        output.write_all(&[b'$', b'X', self.direction.to_byte(), 0])?;
+        output.write_all(&self.cmd.to_le_bytes())?;
+        output.write_all(&(self.data.len() as u16).to_le_bytes())?;
+        output.write_all(&self.data)?;
+        output.write_all(&[self.crc_v2()])?;
+
+        Ok(self.packet_size_bytes_v2())
     }
 }
 

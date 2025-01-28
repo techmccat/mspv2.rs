@@ -12,12 +12,13 @@ edition = "2021"
 packed_struct = { version = "0.10", default-features = false }
 serde = { version = "1.0", optional = true }
 serde_derive = { version = "1.0", optional = true }
-defmt = { version = "0.3", optional = true, features = ["alloc"]}
+defmt = { version = "0.3", optional = true, features = ["alloc"] }
 crc-any = "2.3"
+embedded-io = "0.6"
 
 [features]
 default = ["std", "serde"]
-std = ["defmt/alloc"]
+std = ["defmt/alloc", "embedded-io/std" ]
 suppport_int32_setting_type = []
 serde = ["dep:serde", "dep:serde_derive"]
-defmt = ["dep:defmt"]
+defmt = ["dep:defmt", "embedded-io/defmt-03"]
